@@ -9,19 +9,19 @@ func TestHtmlParser(t *testing.T) {
 
   var domainSlice []string
   var fooSlice []string
-  fooSlice  = append(fooSlice, "foo", "/bar/baz")
-  domainSlice = append(domainSlice, "/", "/-/about", "https://github.com/golang/net/")
+  fooSlice  = append(fooSlice, "foo.com" )
+  domainSlice = append(domainSlice, "https://github.com/golang/net/")
 
   cases := []struct {
-		in string
+		html , domain string
     want []string
 	}{
-		{foo, fooSlice},
-    {htmlsample, domainSlice},
+		{foo, "foo.com",  fooSlice},
+    {htmlsample, "github.com", domainSlice},
 	}
 
 	for _, c := range cases {
-		got:= Htmlparser(c.in)
+		got:= Htmlparser(c.html, c.domain)
 		if !reflect.DeepEqual(got,c.want) {
 			t.Errorf("Htmlparser() returned \n %q, \n wanted  \n%q", got, c.want)
     }
@@ -30,8 +30,9 @@ func TestHtmlParser(t *testing.T) {
 
 
 
-  const foo = `<p>Links:</p><ul><li><a href="foo">
-  Foo</a><li><a href="/bar/baz">BarBaz</a></ul>`
+  const foo = `<p>Links:</p><ul><li><a href="foo.com">
+  Foo</a><li><a href="/bar/baz">BarBaz</a><a href="bar.com">
+  bar</a></ul>`
   const htmlsample =`<!DOCTYPEhtml><htmllang="en">
   <headprofile="http://a9.com/-/spec/opensearch/1.1/"><metacharset="utf-8">
   <metaname="viewport"content="width=device-width,initial-scale=1.0">
