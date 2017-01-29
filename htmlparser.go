@@ -6,7 +6,9 @@ import ("golang.org/x/net/html"
 
 
 
-func Htmlparser(inputHtml string) (urls string){
+func Htmlparser(inputHtml string) (urls []string){
+
+//var urls []string
 
 doc, err := html.Parse(strings.NewReader(inputHtml))
 if err != nil {
@@ -16,7 +18,7 @@ f = func(n *html.Node) {
     if n.Type == html.ElementNode && n.Data == "a" {
         for _, a := range n.Attr {
             if a.Key == "href" {
-                urls += a.Val
+                urls = append(urls, a.Val)
                 break
             }
         }

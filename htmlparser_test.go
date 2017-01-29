@@ -1,23 +1,29 @@
 package htmlparser
 
 import ("testing"
-        "strings"
+        "reflect"
 )
 
 func TestHtmlParser(t *testing.T) {
 
+
+  var domainSlice []string
+  var fooSlice []string
+  fooSlice  = append(fooSlice, "foo", "/bar/baz")
+  domainSlice = append(domainSlice, "/", "/-/about", "https://github.com/golang/net/")
+
   cases := []struct {
-		in , want string
+		in string
+    want []string
 	}{
-		{foo, "foo/bar/baz"},
-    {htmlsample, "github.com"},
-    {htmlsample, "golang"},
+		{foo, fooSlice},
+    {htmlsample, domainSlice},
 	}
 
 	for _, c := range cases {
 		got:= Htmlparser(c.in)
-		if !strings.Contains(got,c.want) {
-			t.Errorf("Htmlparser(%q) returned %q, wanted  %q", c.in, got, c.want)
+		if !reflect.DeepEqual(got,c.want) {
+			t.Errorf("Htmlparser() returned \n %q, \n wanted  \n%q", got, c.want)
     }
 	}
 }
